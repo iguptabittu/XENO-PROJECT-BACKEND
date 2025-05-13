@@ -1,19 +1,21 @@
-import express from 'express';
+import express from "express";
 import dotenv from "dotenv";
-import { connectDB } from './config/db.js';
+import connectDB from "./config/db.js"
+import customerRoute from "./routes/routes.customer.js";
+import orderRoute from "./routes/routes.order.js";
 
-import productRoutes from './routes/product.route.js';
 dotenv.config();
+connectDB();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+app.use(express.json());
 
-app.use(express.json());   //allow us to accept json data from the body
+app.use('/api/customers', customerRoute);
+app.use('/api/orders', orderRoute);
 
-app.use('/api/products',productRoutes);
+const PORT = process.env.PORT || 5000;
+
 
 app.listen(PORT, () => {
-    connectDB();
-    console.log('Server started at http://localhost:'+PORT);
+  console.log(`🚀 Server is running at http://localhost:${PORT}`);
 });
-
